@@ -11,13 +11,12 @@ var routes = {
         "/cart" : "cart",
         "/services":"services",
         "/user":"user",
-        "/item":"item"
+        "/item":"item",
+        "/products" : "products",
     }
 };
 
 SOSSGRID.routes.set (routes);
-
-
 
 function GetItemCount(){
   var itemsCount=0;

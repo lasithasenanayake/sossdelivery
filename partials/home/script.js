@@ -2,13 +2,19 @@
     var bindData =  {
             message : "Works!!!",
             items: []
-            
     };
 
-$.ajax({url: "apis/products/all", success: function(result){
-    console.log(result);
-    bindData.items = result.result;
-}})
+    var pInstance = window.SOSSGRID.getPlugin ("routes");
+    var routeData = pInstance.getInputData();
+    
+    var reqUrl;
+    if (routeData) if (routeData.cat) reqUrl = "apis/products/" + routeData.cat;
+    if (!reqUrl) reqUrl = "apis/products/all";
+        
+    $.ajax({url: reqUrl, success: function(result){
+        console.log(result);
+        bindData.items = result.result;
+    }})
 
     return {
         data : bindData,

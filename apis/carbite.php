@@ -7,7 +7,9 @@ class CReq {
 	public function Body(){return $_POST;}
 	public function GetContentType(){return "";}
 
-	function __construct($params){
+	function __construct($params, $m, $p){
+		$this->method = $m;
+		$this->template = $p;
 		$this->p = $params;
 		$this->qP = $this->aTo($_GET);
 		$this->hP = $this->aTo(getallheaders());
@@ -35,11 +37,13 @@ class Carbite {
 	static $cbf;
 	static $cbp;
 	static $rParts;
+	static $m, $p;
 
 	public static function GET ($p, $f) {self::chk("GET", $p, $f);}
 	public static function POST ($p, $f) {self::chk("POST", $p, $f);}
 	public static function PUT ($p, $f) {self::chk("PUT", $p, $f);}
 	public static function DELETE ($p, $f) {self::chk("DELETE",$p, $f);}
+	public static function HANDLE ($m, $p, $f) {self::chk($m,$p, $f);}
 
 	public static function Start(){
 		if (isset(self::$cbf)) self::call(self::$cbf, self::$cbp);
@@ -73,13 +77,13 @@ class Carbite {
 							if (strcmp($cParts[$i], self::$rParts[$i]) != 0) { $matched = false; break; }
 						}
 					}
-				if ($matched){self::$cbp = $p;self::$cbf = $fu;}
+				if ($matched){self::$cbp = $p;self::$cbf = $fu;self::$m=$m; self::$p=$pa;}
 			}
 		}
 	}
 
 	static function call($f, $p){
-		$req = new CReq($p);
+		$req = new CReq($p, self::$m, self::$p);
 		$res = new CRes();
 		$f($req, $res);
 		self::out($res);

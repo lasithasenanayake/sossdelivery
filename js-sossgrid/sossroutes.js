@@ -1,5 +1,7 @@
 (function (w){
 
+    var currentRoute;
+    
     var settings = {
         routes: {}
     };
@@ -29,6 +31,25 @@
         if (hi !=-1){
             var toUrl = url.newURL.substring(hi +1);
             var fromUrl = url.oldURL.substring(ohi +1);
+
+
+            var qi = toUrl.indexOf ("?");
+            
+            if (qi !=-1){
+                qparams = toUrl.substring (qi + 1);
+                toUrl = toUrl.substring(0,qi);
+
+                var paramList = qparams.split ("&");
+                if (!dataBag[toUrl]) dataBag[toUrl] = {};
+
+                for (pi in paramList){
+                    var kv =  paramList[pi].split ("=");                    
+                    dataBag[toUrl][kv[0]] = kv.length == 1 ? undefined : kv [1];
+                }
+
+            } 
+
+            currentRoute = toUrl;
 
             if (settings.routes.partials)
                 partialToDownload = settings.routes.partials[toUrl];
@@ -141,7 +162,7 @@
             browserNavigate("route");
         },
         getInputData : function (){
-            //
+            return (dataBag && currentRoute) ? dataBag[currentRoute] : undefined;;
         }
     }
 
