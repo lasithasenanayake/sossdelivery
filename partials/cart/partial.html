@@ -1,0 +1,22 @@
+<div class="table-responsive">
+  <table class="table">
+    <tr>
+        <th>Image</th>
+        <th>Description</th>
+        <th>QTY</th>
+        <th class="pull-right">Amount</th>
+    </td>
+    <tr v-for="item in items">
+      <td ><img v-bind:src=item.imgurl class="img-rounded" /></td>
+      <td>{{ item.name }}</td>
+      <td><input v-model="item.qty" type="number" name="quantity" min="0" max="200"></td>
+      <td class="pull-right">Rs.{{ item.price*item.qty }}</td>
+    </tr>
+    <tr>
+      <td ></td>
+      <td></td>
+      <td></td>
+      <td class="pull-right">{{ total }}</td>
+    </tr>
+  </table>
+</div>
