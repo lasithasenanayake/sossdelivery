@@ -5,7 +5,7 @@
             
     };
 
-$.ajax({url: "api/index.php/products/all", success: function(result){
+$.ajax({url: "apis/products/all", success: function(result){
     console.log(result);
     bindData.items = result.result;
 }})

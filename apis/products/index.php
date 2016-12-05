@@ -1,11 +1,13 @@
 <?php
-require_once("carbite.php");
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+require_once("../carbite.php");
 
 Carbite::GET("/hello/@name",function($req,$res){
 	$res->SetJSON("Hello ". $req->Params()->name);
 });
 
-Carbite::GET("/products/@type",function($req,$res){
+Carbite::GET("/@type",function($req,$res){
 	$products=array();
 	$x=0;
 	while($x<100){
