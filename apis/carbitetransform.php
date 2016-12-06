@@ -9,20 +9,21 @@ class CarbiteTransform {
     private static function sendRequest($mObj){
         $ch=curl_init();
         
-        
         //$currentHeaders = apache_request_headers();
         $forwardHeaders = $mObj->rh;
+        array_push($forwardHeaders, "Host: $_SERVER[HTTP_HOST]");
+        array_push($forwardHeaders, "Content-Type: application/json");
         /*
         foreach ($currentHeaders as $key => $value)
             if (!(strcmp(strtolower($key), "host") ===0 || strcmp(strtolower($key),"content-type")===0))
                 array_push($forwardHeaders, "$key : $value");
         */
         curl_setopt($ch, CURLOPT_HTTPHEADER, $forwardHeaders);
-        curl_setopt($ch, CURLOPT_URL, "$mObj->rp");
+        curl_setopt($ch, CURLOPT_URL, $mObj->rp);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HEADERFUNCTION, "processHeaders");
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $mObj->rm);
 
-        if($_SERVER["REQUEST_METHOD"]!="GET"){
+        if(isset($mObj->rb)){            
             $postData = $mObj->rb;
             curl_setopt($ch, CURLOPT_POST, count($postData));
             curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
@@ -41,7 +42,7 @@ class CarbiteTransform {
         $mObj = new stdClass();
         $mObj->rm = $rm;
         $mObj->rp = $rp;
-        $mObj->rb = $rb;
+        $mObj->rb = isset($rb) ? str_replace(array("\r", "\n","\t"), '', $rb) : null;
         $mObj->rh = $rh;
         self::$mappings["$m:$p"] = $mObj;
 

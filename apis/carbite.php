@@ -105,11 +105,11 @@ class Carbite {
 }
 
 function CERR($en, $es, $ef, $el){
-	$ec = new Exception();
+	$ec = new Exception($es);
 	$ec->no = $en;
-	$ec->message = $es;
+	//$ec->message = $es;
 	$ec->filename = $ef;
-	$ec->line = $el;
+	//$ec->line = $el;
 	throw $ec;
 }
 

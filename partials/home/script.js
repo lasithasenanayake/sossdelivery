@@ -8,7 +8,7 @@
     var routeData = pInstance.getInputData();
     
     var reqUrl;
-    if (routeData) if (routeData.cat) reqUrl = "apis/products/" + routeData.cat;
+    if (routeData) if (routeData.cat) reqUrl = "apis/products/bycat/" + routeData.cat;
     if (!reqUrl) reqUrl = "apis/products/all";
         
     $.ajax({url: reqUrl, success: function(result){
