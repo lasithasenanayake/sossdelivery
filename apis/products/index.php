@@ -1,25 +1,29 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-require_once("../carbitetransform.php");
-define ("OS_URL", "http://localhost:9000/data");
 
-$productInsert = <<<EOT
+require_once("../carbitetransform.php");
+
+define ("OS_URL", "http://localhost:9000/data");
+$pbTemplate = <<<EOT
 {
-	"object":{
-		"itemid":@id,
-		"name":"Test-Featured",
-		"caption":"Test-Featured",
-		"price":100.50,
-		"imgurl":"http://placehold.it/320x150",
-		"catogory":"Featured"
-	}
+	"object":@@body@@
 }
 EOT;
 
-CarbiteTransform::RESTROUTE("GET","/products/savetest/@id", "POST", OS_URL ."/products", $productInsert);
+function checkAdminFilter(){
+	
+}
+
+function tokenCheckFilter (){
+	
+}
+
+//Carbite::GLOBALFILTER("tokenCheckFilter");
+CarbiteTransform::RESTROUTE("POST","/products/save", "POST", OS_URL ."/products", new PostBodyTemplate($pbTemplate), null,"checkAdminFilter");
 CarbiteTransform::RESTROUTE("GET","/products/all", "GET", OS_URL ."/products");
 CarbiteTransform::RESTROUTE("GET","/products/bycat/@catid", "GET", OS_URL ."/products?query=catogory:@catid");
+CarbiteTransform::RESTROUTE("GET","/products/byid/@iid", "GET", OS_URL ."/products?query=itemid:@iid");
 
 Carbite::Start();
 ?>

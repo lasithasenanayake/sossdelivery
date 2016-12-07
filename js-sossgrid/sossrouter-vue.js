@@ -5,19 +5,25 @@
 
     var exports = {
         inject: function (data, cb){
-            var routeSettings = pInstance.getSettings();
-            var renderDiv = $("#" + routeSettings.routes.renderDiv);
-                    
-            renderDiv.html(data["partial.html"]);
+            try {
+                var routeSettings = pInstance.getSettings();
+                var renderDiv = $("#" + routeSettings.routes.renderDiv);
+                        
+                renderDiv.html(data["partial.html"]);
 
-            var vueData
-            eval ("vueData = " + data["script.js"]);
-            console.log (vueData);
-            vueData.el = '#' + routeSettings.routes.renderDiv;
+                var vueData
+                eval ("vueData = " + data["script.js"]);
+                vueData.el = '#' + routeSettings.routes.renderDiv;
 
-            var app = new Vue(vueData);
-
-            cb (data);
+                var app = new Vue(vueData);
+                if (vueData.onReady)
+                    vueData.onReady(app);
+                cb (data);
+            } catch (e){
+                console.log ("Error Occured While Loading...");
+                console.log (e);
+                cb();
+            }
         }
     };
     pInstance.configure ("inject-engine", exports);

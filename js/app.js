@@ -13,6 +13,9 @@ var routes = {
         "/user":"user",
         "/item":"item",
         "/products" : "products",
+        "/admin" : "admin",
+        "/admin-allproducts" : "admin-allproducts",
+        "/admin-productform" : "admin-productform"
     }
 };
 

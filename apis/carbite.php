@@ -34,16 +34,24 @@ class CRes {
 
 class Carbite {
 
-	static $cbf;
-	static $cbp;
+	static $cbf,$cbp, $cbfil, $gfil;
 	static $rParts;
 	static $m, $p;
 
-	public static function GET ($p, $f) {self::chk("GET", $p, $f);}
-	public static function POST ($p, $f) {self::chk("POST", $p, $f);}
-	public static function PUT ($p, $f) {self::chk("PUT", $p, $f);}
-	public static function DELETE ($p, $f) {self::chk("DELETE",$p, $f);}
-	public static function HANDLE ($m, $p, $f) {self::chk($m,$p, $f);}
+	public static function GET ($p, $f, $fil=null) {self::chk("GET", $p, $f, $fil);}
+	public static function POST ($p, $f, $fil=null) {self::chk("POST", $p, $f, $fil);}
+	public static function PUT ($p, $f, $fil=null) {self::chk("PUT", $p, $f, $fil);}
+	public static function DELETE ($p, $f, $fil=null) {self::chk("DELETE",$p, $f, $fil);}
+	public static function HANDLE ($m, $p, $f, $fil=null) {self::chk($m,$p, $f, $fil);}
+
+	public static function GLOBALFILTER($f){
+		if (!isset(self::$gfil)) self::$gfil = array();
+			
+		if (is_array($f)){
+			foreach ($f as $f1)
+				array_push(self::$gfil, $f);
+		} else array_push(self::$gfil, $f); 
+	}
 
 	public static function Start(){
 		if (isset(self::$cbf)) self::call(self::$cbf, self::$cbp);
@@ -55,8 +63,19 @@ class Carbite {
 		return str_replace(str_replace($_SERVER['DOCUMENT_ROOT'], "", $bp), "", $_SERVER['REQUEST_URI']);
 	}
 
-	static function chk($m, $pa, $fu){
+	static function filterEval(){
+		if (isset(self::$gfil))
+			foreach (self::$gfil as $f) $f();
 
+		if (isset(self::$cbfil)){
+			if (is_array(self::$cbfil)){
+				foreach (self::$cbfil as $f) $f();
+			} else {$f = self::$cbfil;$f();} 
+		}
+	}
+
+
+	static function chk($m, $pa, $fu, $fil){
 		if (strcmp($m, $_SERVER["REQUEST_METHOD"]) == 0) {
 			if (!isset(self::$rParts)) {
 				$rPath = self::getRoute();
@@ -77,12 +96,14 @@ class Carbite {
 							if (strcmp($cParts[$i], self::$rParts[$i]) != 0) { $matched = false; break; }
 						}
 					}
-				if ($matched){self::$cbp = $p;self::$cbf = $fu;self::$m=$m; self::$p=$pa;}
+					
+				if ($matched){self::$cbp = $p;self::$cbf = $fu;self::$m=$m; self::$p=$pa; self::$cbfil=$fil;}
 			}
 		}
 	}
 
 	static function call($f, $p){
+		self::filterEval();
 		$req = new CReq($p, self::$m, self::$p);
 		$res = new CRes();
 		$f($req, $res);

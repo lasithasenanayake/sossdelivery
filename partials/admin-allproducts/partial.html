@@ -1,0 +1,9 @@
+<div>
+    <a href="#/admin-productform">New Product</a>
+    <br/><br/><br/>
+    <div v-for="product in allProducts">
+        <label>{{product.caption}}</label>
+        <a v-bind:href="'#/admin-productform?productid=' + product.itemid">Edit</a>
+        <a v-bind:href="'#/admin-productform?productid=' + product.itemid">Delete</a>
+    </div>
+</div>

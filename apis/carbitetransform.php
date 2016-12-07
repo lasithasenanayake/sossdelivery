@@ -2,9 +2,29 @@
 
 require_once (__DIR__ . "/carbite.php");
 
+class PostBodyTemplate {
+    private $template;
+    
+    function __construct($template){
+        $this->template = $template;
+    }
+
+    function getBody($data){
+        return str_replace("@@body@@",$data, $this->template);
+    }
+}
+
 class CarbiteTransform {
 
     static $mappings = array();
+
+    private static function getPostBody() {
+        $rawInput = fopen('php://input', 'r');
+        $tempStream = fopen('php://temp', 'r+');
+        stream_copy_to_stream($rawInput, $tempStream);
+        rewind($tempStream);
+        return stream_get_contents($tempStream);
+    }
 
     private static function sendRequest($mObj){
         $ch=curl_init();
@@ -38,11 +58,12 @@ class CarbiteTransform {
         exit();	
     }
 
-	public static function RESTROUTE ($m, $p, $rm, $rp, $rb = null, $rh = array()) {
+
+    public static function RESTROUTE ($m, $p, $rm, $rp, $rb = null, $rh = array(), $filter = null) {
         $mObj = new stdClass();
         $mObj->rm = $rm;
         $mObj->rp = $rp;
-        $mObj->rb = isset($rb) ? str_replace(array("\r", "\n","\t"), '', $rb) : null;
+        $mObj->rb = $rb;
         $mObj->rh = $rh;
         self::$mappings["$m:$p"] = $mObj;
 
@@ -62,9 +83,17 @@ class CarbiteTransform {
             
             $mObj->rp = strtr($mObj->rp,$allParams);
             
-            if (isset($mObj->rb)) $mObj->rb = strtr($mObj->rb,$allParams);
-            $tmpHeaders = array();
+            $rawBody = self::getPostBody();
+            if (isset($mObj->rb)) {
+                
+                if (is_object($mObj->rb))
+                    $mObj->rb = $mObj->rb->getBody($rawBody);
 
+                $mObj->rb = strtr($mObj->rb,$allParams);
+            }
+
+            $tmpHeaders = array();
+            if (isset($mObj->rh))
             foreach ($mObj->rh as $key => $value){
                 if (isset($allParams[$value]))
                     array_push($tmpHeaders, "$key: ". $allParams[$value]);
@@ -74,7 +103,7 @@ class CarbiteTransform {
             $mObj->rh = $tmpHeaders;
             
             $res->SetJSON(self::sendRequest($mObj));
-        });
+        }, $filter);
 
     }
 
