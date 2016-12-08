@@ -1,8 +1,6 @@
 (function (){
 
-    var bindData =  {
-        allProducts : []
-    }
+    var scope;
 
     function loadProducts(category, skip, take){
         var url;
@@ -12,12 +10,11 @@
             url = "./apis/products/bycat/" + category;
 
         $.ajax({url: url, success: function(result){
-            console.log(result.response);
-            bindData.allProducts = result.response;
+            scope.allProducts = result.response;
         }})
     }
 
-    loadProducts(undefined,0,100);
+    
 
     return {
         methods:{
@@ -25,6 +22,12 @@
 
             }
         },
-        data : bindData
+        data :{
+            allProducts : []
+        },
+        onReady: function(s){
+            scope = s;
+            loadProducts(undefined,0,100);
+        }
     }
 })()

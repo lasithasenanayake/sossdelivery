@@ -35,12 +35,16 @@
 
             var qi = toUrl.indexOf ("?");
             
+            //if (!dataBag[toUrl]) 
+                dataBag[toUrl] = {};
+
             if (qi !=-1){
                 qparams = toUrl.substring (qi + 1);
                 toUrl = toUrl.substring(0,qi);
-
+                
+                dataBag[toUrl] = {};
+                
                 var paramList = qparams.split ("&");
-                if (!dataBag[toUrl]) dataBag[toUrl] = {};
 
                 for (pi in paramList){
                     var kv =  paramList[pi].split ("=");                    
@@ -162,7 +166,7 @@
             browserNavigate("route");
         },
         getInputData : function (){
-            return (dataBag && currentRoute) ? dataBag[currentRoute] : undefined;;
+            return (dataBag && currentRoute) ? dataBag[currentRoute] : undefined;
         }
     }
 

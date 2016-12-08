@@ -11,7 +11,7 @@
                         
                 renderDiv.html(data["partial.html"]);
 
-                var vueData
+                var vueData;
                 eval ("vueData = " + data["script.js"]);
                 vueData.el = '#' + routeSettings.routes.renderDiv;
 
