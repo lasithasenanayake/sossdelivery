@@ -10,7 +10,7 @@
             url = "./apis/products/bycat/" + category;
 
         $.ajax({url: url, success: function(result){
-            scope.allProducts = result.response;
+            scope.items = result.response;
         }})
     }
 
@@ -23,7 +23,7 @@
             }
         },
         data :{
-            allProducts : []
+            items : []
         },
         onReady: function(s){
             scope = s;

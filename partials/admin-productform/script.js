@@ -5,15 +5,74 @@
     var bindData = {
         product:{},
         image:'',
-        categories:["Breakfast","Lunch","Dinner","Snack","Other"]
+        categories:["Breakfast","Lunch","Dinner","Snack","Other"],
+        submitErrors: undefined
     };
 
-    function validate(){
-        return true;
+
+    function Validator(sc){
+        var mapping = {};
+        return {
+            map : function(k,t,m){
+                if (!mapping[k])
+                    mapping[k] = {required:{val:false, msg:undefined}, type:{}};
+                
+                if (typeof t === "boolean"){
+                    mapping[k].required.val = t;
+                    mapping[k].required.msg = m;
+                }else {
+                    mapping[k].type.val = t;
+                    mapping[k].type.msg = m;
+                }
+            },
+            validate: function(){
+                var msgStack = [];
+                for (mk in mapping){
+                    var key;
+                    var obj;
+                    if (mk.indexOf(".") == -1){
+                      key = mk;
+                      obj = sc;
+                    }else{
+                      var splitData = mk.split(".");
+                      key = splitData[1];
+                      obj = sc[splitData[0]];
+                    }
+
+                    if (mapping[mk].required.val==true && !obj[key])
+                          msgStack.push(mapping[mk].required.msg);
+
+                    if (obj[key]){
+                      if (mapping[mk].type.val)
+                        if (mapping[mk].type.val !== typeof obj[key])
+                          msgStack.push(mapping[mk].type.msg);
+                    }
+
+                }
+
+                var outData = msgStack.length ==0 ? undefined : msgStack; 
+                return outData;
+            }
+        }
+    };
+
+    var validator;
+
+    function loadValidator(){
+        validator = new Validator (scope);
+        validator.map ("product.itemid",true, "You should enter a itemID");
+        validator.map ("product.itemid","number", "ItemID should be a number");
+        validator.map ("product.name",true, "You should enter a name");
+        validator.map ("product.caption",true, "You should enter a caption");
+        validator.map ("product.price",true, "You should endter a price");
+        validator.map ("product.price","number", "Price should be a number");
+        validator.map ("product.catogory",true, "You should select a product category");
+        validator.map ("image",true, "You should upload an image");
     }
 
     function submit(){
-        if (validate()){
+        scope.submitErrors = validator.validate(); 
+        if (!scope.submitErrors){
             var url;
             if (routeData.productid) url = "apis/products/update";
             else url = "apis/products/insert";
@@ -93,6 +152,7 @@
         data : bindData,
         onReady: function(s){
             scope = s;
+            loadValidator();
             if (routeData.productid)
                 loadProduct(scope);
         }

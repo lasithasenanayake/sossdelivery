@@ -77,7 +77,6 @@ class Carbite {
 	}
 
 	static function chk($m, $pa, $fu, $fil){
-		
 		$mdn = basename(dirname($_SERVER['SCRIPT_FILENAME']));
 		$cbp = basename(__DIR__);
 		if (strcmp($mdn, $cbp) != 0) $pa = "/$mdn$pa";
@@ -85,7 +84,6 @@ class Carbite {
 		if (strcmp($m, $_SERVER["REQUEST_METHOD"]) == 0) {
 			if (!isset(self::$rParts)) {
 				$rPath = self::getRoute();
-				
 				$qi = strpos($rPath, '?');
 				if ($qi) $rPath = substr($rPath, 0, $qi);
 				self::$rParts = array_map('trim', explode('/', $rPath));
