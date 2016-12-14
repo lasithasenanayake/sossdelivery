@@ -10,11 +10,11 @@ function getPostBody() {
     return stream_get_contents($tempStream);
 }
 
-Carbite::GET("/fileuploader/test",function($req,$res){
+Carbite::GET("/test",function($req,$res){
     $res->Set("Hello World");
 });
 
-Carbite::GET("/fileuploader/get/@ns/@name",function($req,$res){
+Carbite::GET("/get/@ns/@name",function($req,$res){
     $ns = $req->Params()->ns;
     $name = $req->Params()->name;
     $folder = MEDIA_FOLDER . "\\".  $_SERVER["HTTP_HOST"] . "\\$ns";
@@ -24,7 +24,7 @@ Carbite::GET("/fileuploader/get/@ns/@name",function($req,$res){
     exit();
 });
 
-Carbite::POST("/fileuploader/upload/@ns/@name",function($req,$res){
+Carbite::POST("/upload/@ns/@name",function($req,$res){
     $ns = $req->Params()->ns;
     $name = $req->Params()->name;
     $folder = MEDIA_FOLDER . "\\".  $_SERVER["HTTP_HOST"] . "\\$ns";

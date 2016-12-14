@@ -65,7 +65,12 @@ class CarbiteTransform {
         $mObj->rp = $rp;
         $mObj->rb = $rb;
         $mObj->rh = $rh;
-        self::$mappings["$m:$p"] = $mObj;
+
+		$mdn = basename(dirname($_SERVER['SCRIPT_FILENAME']));
+		$cbp = basename(__DIR__);
+		if (strcmp($mdn, $cbp) != 0) $pa = "/$mdn$p";
+
+        self::$mappings["$m:$pa"] = $mObj;
 
         Carbite::HANDLE ($m, $p, function($req,$res){
             $allParams = array();

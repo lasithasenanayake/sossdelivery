@@ -59,7 +59,7 @@ class Carbite {
 	}
 
 	static function getRoute() {
-		$bp = str_replace($_SERVER["DOCUMENT_ROOT"],"", str_replace("carbite.php","",str_replace("\\","/",__FILE__)));
+		$bp = str_replace($_SERVER["DOCUMENT_ROOT"],"", str_replace("\\","/",__DIR__)) . "/";
 		return str_replace(str_replace($_SERVER['DOCUMENT_ROOT'], "", $bp), "", $_SERVER['REQUEST_URI']);
 	}
 
@@ -74,8 +74,11 @@ class Carbite {
 		}
 	}
 
-
 	static function chk($m, $pa, $fu, $fil){
+		$mdn = basename(dirname($_SERVER['SCRIPT_FILENAME']));
+		$cbp = basename(__DIR__);
+		if (strcmp($mdn, $cbp) != 0) $pa = "/$mdn$pa";
+		
 		if (strcmp($m, $_SERVER["REQUEST_METHOD"]) == 0) {
 			if (!isset(self::$rParts)) {
 				$rPath = self::getRoute();
@@ -83,7 +86,8 @@ class Carbite {
 				if ($qi) $rPath = substr($rPath, 0, $qi);
 				self::$rParts = array_map('trim', explode('/', $rPath));
 			}
-			$cParts = explode("/", $pa);
+			$cParts = explode("/", $pa);	
+
 			if (sizeof($cParts) == sizeof(self::$rParts)){
 				$matched = true;
 				$p = new stdClass();
