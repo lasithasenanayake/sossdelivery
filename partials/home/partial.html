@@ -32,7 +32,7 @@
                 </div>
 				<div class="col-sm-4 col-lg-4 col-md-4" v-for="item in items">
 					<div class="thumbnail">
-						<img v-bind:src=item.imgurl alt="">
+						<img v-bind:src="'apis/fileuploader/get/products/' + item.itemid" alt=""/>
 						<div class="caption">
 							<h4 class="pull-right">Rs.{{ item.price }}</h4> 
 							<h4><a href="#">{{ item.name }}</a></h4> 

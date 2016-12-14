@@ -7,17 +7,18 @@
     var pInstance = window.SOSSGRID.getPlugin ("routes");
     var routeData = pInstance.getInputData();
     
-    var reqUrl;
-    if (routeData) if (routeData.cat) reqUrl = "apis/products/bycat/" + routeData.cat;
-    if (!reqUrl) reqUrl = "apis/products/all";
-        
-    $.ajax({url: reqUrl, success: function(result){
-        console.log(result);
-        bindData.items = result.result;
-    }})
 
     return {
         data : bindData,
+        onReady: function(app){
+            var reqUrl;
+            if (routeData) if (routeData.cat) reqUrl = "apis/products/bycat/" + routeData.cat;
+            if (!reqUrl) reqUrl = "apis/products/all";
+                
+            $.ajax({url: reqUrl, success: function(result){
+                bindData.items = result.response;
+            }});
+        },
         methods:{
             additem:function(item){
                 items=[];
