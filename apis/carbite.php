@@ -60,7 +60,9 @@ class Carbite {
 
 	static function getRoute() {
 		$bp = str_replace($_SERVER["DOCUMENT_ROOT"],"", str_replace("\\","/",__DIR__)) . "/";
-		return str_replace(str_replace($_SERVER['DOCUMENT_ROOT'], "", $bp), "", $_SERVER['REQUEST_URI']);
+		$r = str_replace(str_replace($_SERVER['DOCUMENT_ROOT'], "", $bp), "", $_SERVER['REQUEST_URI']);
+		if ($r[0] !== "/") $r = "/$r";
+		return $r;
 	}
 
 	static function filterEval(){
