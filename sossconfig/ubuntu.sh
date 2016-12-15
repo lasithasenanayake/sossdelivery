@@ -1,4 +1,6 @@
 #!/bin/bash
+add-apt-repository ppa:ondrej/php
+apt-get update
  apt-get install -y apache2 php5.6 php5.6-curl
  a2enmod rewrite
  service apache2 restart
