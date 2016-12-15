@@ -1,4 +1,4 @@
-var url="http://localhost:9000/";
+var url="http://"+window.location.hostname+":9000/";
 var domain=window.location.hostname;
 var routes = {
     renderDiv: "idRenderDiv",
