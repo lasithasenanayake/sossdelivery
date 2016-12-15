@@ -1,4 +1,5 @@
 var url="http://localhost:9000/";
+var domain=window.location.hostname;
 var routes = {
     renderDiv: "idRenderDiv",
     home : "/home",
@@ -57,29 +58,32 @@ login=new Vue({
   methods: {
     checkSession(){
       var session=getCookie("sosskey");
+       
        var self = this;
-      SOSSGRID.callRest(url+"getsession/"+session)
-      .success(function(result){
-          self.userid=result.userid;
-          self.email=result.email;
-          self.isLogin=true;
-          self.password="";
-          console.log(result); 
-          console.log("result"); 
-      })
-      .error(function(){
-          this.isLogin=false;
-          self.password="";
-          toastr.error('email and password is incorrect.', 'Security!');
-         
-      });
+      if(session!=""){
+          SOSSGRID.callRest(url+"getsession/"+session)
+          .success(function(result){
+              self.userid=result.userid;
+              self.email=result.email;
+              self.isLogin=true;
+              self.password="";
+              console.log(result); 
+              console.log("result");
 
+          })
+          .error(function(){
+              this.isLogin=false;
+              self.password="";
+              toastr.error('Session is not valied.', 'Security!');
+            
+          });
+     }
       //console.log(session);
     },
     login: function () {
        //this.isLogin=true;
       var self = this;
-      SOSSGRID.callRest(url+"login/"+this.email+"/"+this.password+"/localhost")
+      SOSSGRID.callRest(url+"login/"+this.email+"/"+this.password+"/"+domain)
       .success(function(result){
           self.userid=result.userid;
           self.email=result.email;
@@ -87,6 +91,17 @@ login=new Vue({
           self.password="";
           console.log(result); 
           console.log("result"); 
+          SOSSGRID.callRest("http://en.gravatar.com/"+self.email+".json")
+              .success(function(result){
+                self.profileurl=result.thumbnailUrl;
+            })
+          .error(function(){
+              //this.isLogin=false;
+              //self.password="";
+              //toastr.error('please update your profile pic on gravatar.', 'profile!');
+              console.log("No Profile pic");
+            
+          }); 
       })
       .error(function(){
            this.isLogin=false;
