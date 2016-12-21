@@ -17,7 +17,7 @@ Carbite::GET("/test",function($req,$res){
 Carbite::GET("/get/@ns/@name",function($req,$res){
     $ns = $req->Params()->ns;
     $name = $req->Params()->name;
-    $folder = MEDIA_FOLDER . "\\".  $_SERVER["HTTP_HOST"] . "\\$ns";
+    $folder = MEDIA_FOLDER . "/".  $_SERVER["HTTP_HOST"] . "/$ns";
 
     header("Content-Type: image/png");
     echo file_get_contents("$folder\\$name");
