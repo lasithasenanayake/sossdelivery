@@ -20,7 +20,7 @@ Carbite::GET("/get/@ns/@name",function($req,$res){
     $folder = MEDIA_FOLDER . "/".  $_SERVER["HTTP_HOST"] . "/$ns";
 
     header("Content-Type: image/png");
-    echo file_get_contents("$folder\\$name");
+    echo file_get_contents("$folder/$name");
     exit();
 });
 
