@@ -27,12 +27,12 @@ Carbite::GET("/get/@ns/@name",function($req,$res){
 Carbite::POST("/upload/@ns/@name",function($req,$res){
     $ns = $req->Params()->ns;
     $name = $req->Params()->name;
-    $folder = MEDIA_FOLDER . "\\".  $_SERVER["HTTP_HOST"] . "\\$ns";
+    $folder = MEDIA_FOLDER . "/".  $_SERVER["HTTP_HOST"] . "/$ns";
     
     if (!file_exists($folder))
         mkdir($folder, 0777, true);
 
-    file_put_contents("$folder\\$name", getPostBody());
+    file_put_contents("$folder/$name", getPostBody());
     $resObj = new stdClass();
     $resObj->sucess = true;
     $resObj->message = "Successfully Uploaded!!!";
