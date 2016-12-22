@@ -63,8 +63,11 @@ login=new Vue({
       if(session!=""){
           SOSSGRID.callRest(url+"getsession/"+session)
           .success(function(result){
+              var passhash = CryptoJS.MD5(result.email);
+              self.profileimage = "https://www.gravatar.com/avatar/" + passhash+"?s=200&r=pg&d=mm";
               self.userid=result.userid;
               self.email=result.email;
+              self.name=result.email;
               self.isLogin=true;
               self.password="";
               console.log(result); 
@@ -85,8 +88,11 @@ login=new Vue({
       var self = this;
       SOSSGRID.callRest(url+"login/"+this.email+"/"+this.password+"/"+domain)
       .success(function(result){
+          var passhash = CryptoJS.MD5(result.email);
+          self.profileimage = "https://www.gravatar.com/avatar/" + passhash+"?s=200&r=pg&d=mm";
           self.userid=result.userid;
           self.email=result.email;
+          self.name=result.email;
           self.isLogin=true;
           self.password="";
           console.log(result); 

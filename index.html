@@ -54,15 +54,15 @@
                                                     <div class="navbar-content" >
                                                         <div class="row">
                                                             <div class="col-md-5">
-                                                                <img src="img/placeholders/120x120.png"
+                                                                <img v-bind:src="profileimage"
                                                                     alt="Alternate Text" class="img-responsive" />
                                                                 <p class="text-center small">
-                                                                    <a href="#">Change Photo</a></p>
+                                                                    <a href="http://en.gravatar.com/">Change Photo</a></p>
                                                             </div>
                                                             <div class="col-md-7">
-                                                                <span>Uthpalie</span>
+                                                                <span>{{ name }}</span>
                                                                 <p class="text-muted small">
-                                                                    uthpalie@gmail.com</p>
+                                                                    {{ email }}</p>
                                                                 <div class="divider">
                                                                 </div>
                                                                 <a href="#" class="btn btn-primary btn-sm active">View Profile</a>
@@ -165,7 +165,8 @@
 
     </div>
     <!-- /.container -->
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/md5-min.js"></script>
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
     <!-- Bootstrap Core JavaScript -->
