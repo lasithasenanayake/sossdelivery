@@ -1,0 +1,31 @@
+{
+    "fields" : [
+        {
+            "fieldName":"itemid",
+            "dataType":"int",
+            "annotations":{
+                "isPrimary": true
+            }
+        },
+        {
+            "fieldName":"name",
+            "dataType":"java.lang.String"
+        },
+        {
+            "fieldName":"caption",
+            "dataType":"java.lang.String"
+        },
+        {
+            "fieldName":"price",
+            "dataType":"double"
+        },
+        {
+            "fieldName":"imgurl",
+            "dataType":"java.lang.String"
+        },
+        {
+            "fieldName":"catogory",
+            "dataType":"java.lang.String"
+        }
+    ]
+}
