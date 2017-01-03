@@ -134,13 +134,8 @@
         <div class="row">
             <div class="col-md-3">
                 <p class="lead">Menus</p>
-                <div class="list-group">
-                    <a href="#/home?cat=Featured" class="list-group-item">Featured</a>
-                    <a href="#/home?cat=Break Fast" class="list-group-item">Break Fast</a>
-                    <a href="#/home?cat=Lunch" class="list-group-item">Lunch</a>
-                    <a href="#/home?cat=Featured" class="list-group-item">Dinner</a>
-                    <a href="#/home?cat=Featured" class="list-group-item">Snak</a>
-                    <a href="#/home?cat=Featured" class="list-group-item">Other</a>
+                <div class="list-group" id="idProdCategories">
+                    <a v-for="cat in categories" :href="'#/home?cat=' + cat.name" class="list-group-item">{{cat.name}}</a>
                 </div>
             </div>
             

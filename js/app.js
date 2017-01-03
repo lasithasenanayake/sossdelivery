@@ -16,7 +16,9 @@ var routes = {
         "/products" : "products",
         "/admin" : "admin",
         "/admin-allproducts" : "admin-allproducts",
-        "/admin-productform" : "admin-productform"
+        "/admin-productform" : "admin-productform",
+        "/admin-allcategories" : "admin-allcategories",
+        "/admin-categoryform" : "admin-categoryform"
     }
 };
 
@@ -46,6 +48,26 @@ mycart=new Vue({
 })
 
 
+prodCategories=new Vue({
+  el: '#idProdCategories',
+  data:{categories:[]},
+  methods: {
+    load: function (items) {
+      var self = this;
+
+      SOSSGRID.callRest("apis/products/categories/all")
+      .success(function(result){
+        for (var i=0;i<result.response.length;i++)
+          self.categories.push(result.response[i]);
+        
+      })
+      .error(function(){
+ 
+      });
+    }
+  }
+})
+prodCategories.load();
 
 login=new Vue({
   el: '#header-login',
