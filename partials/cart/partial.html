@@ -7,7 +7,7 @@
         <th class="pull-right">Amount</th>
     </td>
     <tr v-for="item in items">
-      <td ><img v-bind:src="'apis/fileuploader/get/products/' + item.itemid" width="100" alt=""/></td>
+      <td ><img v-bind:src="'apis/fileuploader/get/products/' + item.itemid" width="200" alt=""/></td>
       <td>{{ item.name }}</td>
       <td><input v-model="item.qty" type="number" name="quantity" min="0" max="200"></td>
       <td class="pull-right">Rs.{{ item.price*item.qty }}</td>
